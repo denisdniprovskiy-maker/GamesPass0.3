@@ -27,4 +27,18 @@ A small web-based app that lets users log working time and gaming time, and see 
 
 ## ♻️ Persistence
 
-The app stores the balance in `localStorage`, so your balance persists across browser refreshes.
+The app stores the balance and a full transaction history in `localStorage`, so your balance persists across browser refreshes.
+
+### Export / Import
+
+You can download your full state (balance + transaction history) to a JSON file using **Download Balance (JSON)**, and restore it later using **Load Balance (JSON)**.
+
+The JSON includes entries such as:
+- Type: `work` (earned gaming time, requires a UUID task ID)
+- Type: `gaming` (spent gaming time)
+
+This allows you to keep a history of your logs and restore it on another device.
+
+### View Log
+
+Click **Show Log** to view your transaction history directly in the app. It displays all logged working and gaming time entries with timestamps and task IDs (for work logs).
