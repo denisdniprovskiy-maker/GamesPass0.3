@@ -1,0 +1,9 @@
+# Ignore node_modules (if you add Node tooling later)
+node_modules/
+
+# Ignore editor folders
+.vscode/
+
+# Ignore OS artifacts
+.DS_Store
+Thumbs.db

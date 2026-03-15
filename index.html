@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GamePass Time Tracker</title>
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>GamePass Time Tracker</h1>
+      <p class="subtitle">Log your working and gaming time to see your balance.</p>
+    </header>
+
+    <main>
+      <section class="balance">
+        <h2>Gaming Time Balance</h2>
+        <div id="balanceIndicator" class="indicator">
+          <span id="balanceValue">0</span>
+          <span class="unit">min</span>
+        </div>
+        <p class="hint">Positive balance means earned gaming minutes; negative means owed gaming minutes.</p>
+      </section>
+
+      <section class="entry">
+        <div class="entry-row">
+          <label for="workInput">Working time (minutes)</label>
+          <input id="workInput" type="number" min="1" placeholder="e.g., 60" />
+          <button id="workBtn">Log Working Time</button>
+        </div>
+
+        <div class="entry-row">
+          <label for="gameInput">Gaming time (minutes)</label>
+          <input id="gameInput" type="number" min="1" placeholder="e.g., 30" />
+          <button id="gameBtn">Log Gaming Time</button>
+        </div>
+
+        <div class="actions">
+          <button id="resetBtn" class="secondary">Reset Balance</button>
+        </div>
+      </section>
+
+      <section class="notes">
+        <h3>How it works</h3>
+        <ul>
+          <li>Logging working time will <strong>add</strong> gaming minutes to your balance.</li>
+          <li>Logging gaming time will <strong>subtract</strong> from your balance.</li>
+          <li>If balance goes negative, the accumulator turns red.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>Saved in your browser using localStorage.</p>
+    </footer>
+  </div>
+
+  <script src="src/app.js"></script>
+</body>
+</html>
