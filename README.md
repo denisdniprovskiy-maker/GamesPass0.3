@@ -35,7 +35,7 @@ You can download your transaction history to a CSV file using **Download Logs (C
 
 The CSV includes columns: Timestamp, Type, Minutes, TaskId, BalanceAfter.
 
-For importing, use **Load State (JSON/CSV)** to restore full state from a JSON file or append history from a CSV file.
+For full state restoration (balance + history), use **Load State (JSON)** to import a previously exported JSON file.
 
 ### View Log
 

@@ -192,83 +192,31 @@ function exportBalance() {
 }
 
 /**
- * Imports state (balance + history) from a JSON file or adds history from a CSV file.
+ * Imports state (balance + history) from a JSON file.
  */
 function importBalance(file) {
   if (!file) return;
 
   const reader = new FileReader();
   reader.onload = () => {
-    const content = reader.result;
-    const isCsv = file.name.endsWith('.csv') || content.trim().startsWith('Timestamp,Type,Minutes,TaskId,BalanceAfter');
-
-    if (isCsv) {
-      // Parse CSV and add to history
-      const lines = content.trim().split('\n');
-      if (lines.length < 2) {
-        alert("Invalid CSV file.");
-        return;
+    try {
+      const value = JSON.parse(reader.result);
+      if (
+        !value ||
+        typeof value !== "object" ||
+        typeof value.balance !== "number" ||
+        !Number.isFinite(value.balance) ||
+        !Array.isArray(value.history)
+      ) {
+        throw new Error("Invalid state file");
       }
 
-      const state = loadState();
-      const header = lines[0].split(',');
-      if (header.length !== 5 || header[0] !== 'Timestamp' || header[1] !== 'Type' || header[2] !== 'Minutes' || header[3] !== 'TaskId' || header[4] !== 'BalanceAfter') {
-        alert("Invalid CSV format. Expected columns: Timestamp,Type,Minutes,TaskId,BalanceAfter");
-        return;
-      }
-
-      let balance = state.balance;
-      for (let i = 1; i < lines.length; i++) {
-        const cells = lines[i].split(',').map(cell => cell.replace(/^"|"$/g, ''));
-        if (cells.length !== 5) continue;
-
-        const [timestamp, type, minutesStr, taskId, balanceAfterStr] = cells;
-        const minutes = Number(minutesStr);
-        const balanceAfter = Number(balanceAfterStr);
-
-        if (!Number.isFinite(minutes) || !Number.isFinite(balanceAfter)) continue;
-
-        // Adjust balance
-        if (type === 'work') {
-          balance += minutes;
-        } else if (type === 'gaming') {
-          balance -= minutes;
-        }
-
-        // Add entry
-        const entry = {
-          id: `${timestamp}-${Math.random().toString(16).slice(2)}`,
-          type,
-          minutes,
-          timestamp,
-          balanceAfter: balance,
-          ...(taskId && { taskId }),
-        };
-        state.history.push(entry);
-      }
-
-      saveState(state);
-    } else {
-      // Parse JSON
-      try {
-        const value = JSON.parse(content);
-        if (
-          !value ||
-          typeof value !== "object" ||
-          typeof value.balance !== "number" ||
-          !Number.isFinite(value.balance) ||
-          !Array.isArray(value.history)
-        ) {
-          throw new Error("Invalid state file");
-        }
-
-        saveState({
-          balance: value.balance,
-          history: value.history,
-        });
-      } catch (err) {
-        alert("Failed to load state from file. Make sure it is a valid GamePass JSON export or CSV.");
-      }
+      saveState({
+        balance: value.balance,
+        history: value.history,
+      });
+    } catch (err) {
+      alert("Failed to load state from file. Make sure it is a valid GamePass JSON export.");
     }
   };
   reader.readAsText(file);
