@@ -9,7 +9,7 @@
 <body>
   <div class="app">
     <header>
-      <h1>GamePass Time Tracker 0.31</h1>
+      <h1>GamePass Time Tracker</h1>
       <p class="subtitle">Log your working and gaming time to see your balance.</p>
     </header>
 
@@ -31,11 +31,6 @@
         </div>
 
         <div class="entry-row">
-          <label for="taskIdInput">Task ID (UUID)</label>
-          <input id="taskIdInput" type="text" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" />
-        </div>
-
-        <div class="entry-row">
           <label for="gameInput">Gaming time (minutes)</label>
           <input id="gameInput" type="number" min="1" placeholder="e.g., 30" />
           <button id="gameBtn">Log Gaming Time</button>
@@ -44,21 +39,15 @@
         <div class="actions">
           <button id="resetBtn" class="secondary">Reset Balance</button>
         </div>
-
-        <div class="actions">
-          <button id="exportBtn" class="secondary"> Download Balance (JSON)</button>
-          <button id="importBtn" class="secondary"> Load Balance (JSON)</button>
-          <input id="importInput" type="file" accept="application/json" hidden />
-        </div>
-
-        <div class="actions">
-          <button id="showLogBtn" class="secondary">Show Log</button>
-        </div>
       </section>
 
-      <section id="logSection" class="log" style="display: none;">
-        <h3>Transaction Log</h3>
-        <div id="logContent"></div>
+      <section class="notes">
+        <h3>How it works</h3>
+        <ul>
+          <li>Logging working time will <strong>add</strong> gaming minutes to your balance.</li>
+          <li>Logging gaming time will <strong>subtract</strong> from your balance.</li>
+          <li>If balance goes negative, the accumulator turns red.</li>
+        </ul>
       </section>
     </main>
 
