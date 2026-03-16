@@ -31,11 +31,13 @@ The app stores the balance and a full transaction history in `localStorage`, so 
 
 ### Export / Import
 
-You can download your transaction history to a CSV file using **Download Logs (CSV)** — this is perfect for importing into Google Sheets or Excel.
+You can download your full state (balance + transaction history) to a JSON file using **Download Balance (JSON)**, and restore it later using **Load Balance (JSON)**.
 
-The CSV includes columns: Timestamp, Type, Minutes, TaskId, BalanceAfter.
+The JSON includes entries such as:
+- Type: `work` (earned gaming time, requires a UUID task ID)
+- Type: `gaming` (spent gaming time)
 
-For full state restoration (balance + history), use **Load State (JSON)** to import a previously exported JSON file.
+This allows you to keep a history of your logs and restore it on another device.
 
 ### View Log
 

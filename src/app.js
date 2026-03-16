@@ -153,38 +153,22 @@ function resetBalance() {
 }
 
 /**
- * Exports the transaction history to a CSV file for download.
+ * Exports the current state (balance + history) to a JSON file for download.
  */
 function exportBalance() {
   const state = loadState();
-  const history = state.history;
-
-  if (history.length === 0) {
-    alert("No transactions to export.");
-    return;
-  }
-
-  // CSV header
-  let csv = "Timestamp,Type,Minutes,TaskId,BalanceAfter\n";
-
-  // Add rows
-  history.forEach((entry) => {
-    const row = [
-      entry.timestamp,
-      entry.type,
-      entry.minutes,
-      entry.taskId || "",
-      entry.balanceAfter,
-    ];
-    csv += row.map((field) => `"${field}"`).join(",") + "\n";
+  const payload = {
+    ...state,
+    exportedAt: new Date().toISOString(),
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {
+    type: "application/json",
   });
-
-  const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
 
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `gamepass-logs-${Date.now()}.csv`;
+  anchor.download = `gamepass-balance-${Date.now()}.json`;
   anchor.click();
 
   // Cleanup
@@ -192,35 +176,9 @@ function exportBalance() {
 }
 
 /**
- * Imports state (balance + history) from a JSON file.
+ * Displays the transaction log in the UI.
  */
-function importBalance(file) {
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      const value = JSON.parse(reader.result);
-      if (
-        !value ||
-        typeof value !== "object" ||
-        typeof value.balance !== "number" ||
-        !Number.isFinite(value.balance) ||
-        !Array.isArray(value.history)
-      ) {
-        throw new Error("Invalid state file");
-      }
-
-      saveState({
-        balance: value.balance,
-        history: value.history,
-      });
-    } catch (err) {
-      alert("Failed to load state from file. Make sure it is a valid GamePass JSON export.");
-    }
-  };
-  reader.readAsText(file);
-}
+function showLog() {
   const state = loadState();
   const history = state.history;
 
